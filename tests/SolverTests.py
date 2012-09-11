@@ -25,7 +25,7 @@ import sys
 from Numberjack import *
 from Mistral import Solver
 
-class Test(unittest.TestCase):
+class SolverTests(unittest.TestCase):
     
     def testVariable_backtrack(self):
         '''
