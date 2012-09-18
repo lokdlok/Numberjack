@@ -790,8 +790,8 @@ class VarArray(list):
             ub = 1
             name = 'x'
             if optarg1 is not None:
-                #if type(optarg1) is str:
-                if hasattr(optarg1, '__iter__'):
+                #if hasattr(optarg1, '__iter__'):
+                if type(optarg1) is str:
                     name = optarg1
                 elif type(optarg2) is int or type(optarg2) is float:
                     lb = optarg1
@@ -888,11 +888,11 @@ class VarArray(list):
 #
 #    - \code M = Matrix(l) \endcode creates a Matrix from a list l
 #    - M = Matrix(n, m) creates a n x m Matrix of Boolean variables
-#    - M = Matrix(n, m, 'x') creates a n x m Matrix of Boolean variables with names 'x0_0..xn-1_m-1'
+#    - M = Matrix(n, m, 'x') creates a n x m Matrix of Boolean variables with names 'x0.0..xn-1.m-1'
 #    - M = Matrix(n, m, u) creates a n x m Matrix of variables with domains [0..u-1] 
-#    - M = Matrix(n, m, u, 'x') creates a n x m Matrix of variables with domains [0..u-1] and names 'x0_0..xn-1_m-1'
+#    - M = Matrix(n, m, u, 'x') creates a n x m Matrix of variables with domains [0..u-1] and names 'x0.0..xn-1.m-1'
 #    - M = Matrix(n, m, l, u) creates a n x m Matrix of variables with domains [l..u]
-#    - M = Matrix(n, m, l, u, 'x') creates a n x m Matrix of variables with domains [l..u] and names 'x0_0..xn-1_m-1'
+#    - M = Matrix(n, m, l, u, 'x') creates a n x m Matrix of variables with domains [l..u] and names 'x0.0..xn-1.m-1'
 #
 #    Matrices feature specific handlers to access (subsets of) rows and columns. 
 #    The fields 'row', 'col' and 'flat' respectively refer to the list of rows, 
@@ -924,16 +924,6 @@ class VarArray(list):
 #    Matrices support Element constraints on row, column or flatten views.
 class Matrix(list):
 
-    ## accessor to the list of rows
-    row = None
-
-    ## accessor to the list of columns
-    col = None
-
-    ## accessor to the list of cells
-    flat = None
-
-
     def __init__(self, optarg1=None, optarg2=None, optarg3=None, optarg4=None, optarg5=None):
         n = 1
         m = 1
@@ -941,9 +931,15 @@ class Matrix(list):
         ub = 1
         name = 'x'
 
+        self.row = None   # accessor to the list of rows
+        self.col = None   # accessor to the list of columns
+        self.flat = None  # accessor to the list of cells
+
         if optarg2 == None:
             if optarg1 != None:
-                list.__init__(self, [VarArray(row) for row in optarg1])
+                # BH: This could create rows with varying numbers of columns if given a list with different values.
+                #     Should this be allowed? If so, then we need to verify any assumptions being made in this code.
+                list.__init__(self, [VarArray(row, "%s%d." % (name, i)) for i, row in enumerate(optarg1)])
             else:
                 list.__init__(self)
                 return
