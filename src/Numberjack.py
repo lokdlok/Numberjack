@@ -2927,11 +2927,19 @@ class NBJ_STD_Solver(object):
     def load_lp(self, filename, epsilon):
         self.solver.load_lp(filename, epsilon);
     
-    def write_lp(self, filename, extention, epsilon, numberAcross, decimals, objSense, useRowNames):
-        self.solver.write_lp(filename, extention, epsilon, numberAcross, decimals, objSense, useRowNames);
+    def write_lp(self, filename, extension, 
+                 epsilon = 1e-5, 
+                 numberAcross = 10, 
+                 decimals = 5,
+                 objSense = 0.0,
+                 useRowNames = True):
+        self.solver.write_lp(filename, extension,
+                             epsilon,  numberAcross,
+                             decimals, objSense,
+                             useRowNames);
     
-    def write_mps(self, filename, extention, objSense):
-        self.solver.write_lp(filename, extention, objSense);
+    def write_mps(self, filename, extension, objSense = 0.0):
+        self.solver.write_mps(filename, extension, objSense);
 
     def num_vars(self):
         return self.solver.num_vars()
