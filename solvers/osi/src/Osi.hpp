@@ -5,11 +5,11 @@
 #include <math.h>
 
 // solver interfaces
-#include <CoinPackedVector.hpp>
-#include <CoinPackedMatrix.hpp>
-#include <CoinShallowPackedVector.hpp>
-#include <CoinTime.hpp>
-#include <OsiSolverInterface.hpp>
+#include <coin/CoinPackedVector.hpp>
+#include <coin/CoinPackedMatrix.hpp>
+#include <coin/CoinShallowPackedVector.hpp>
+#include <coin/CoinTime.hpp>
+#include <coin/OsiSolverInterface.hpp>
 
 template<class T>
 class OsiArray {
@@ -204,6 +204,10 @@ public:
     int load_gmpl(const char* filename, const char* dataname = NULL);
     int load_mps(const char* filename, const char* extension);
     int load_lp(const char* filename, const double epsilon);
+    
+    void write_lp(const char* filename, const char* extension, const double epsilon, const int numberAcross, const int decimals, double objSense, const bool useRowNames);
+    void write_mps(const char* filename, const char* extension, double objSense);
+    //int write_mps(const char* filename, const char* extension);
 
 // initialise the solver before solving (no more calls to add after this)
     void initialise(MipWrapperExpArray& arg);

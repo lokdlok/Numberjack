@@ -14,7 +14,10 @@ class MIPParser(object):
 
     def parse_model(self):
         # Import Glpk solver so that we have support for gmpl
-        import OsiGlpk as Osi
+        try:
+            import OsiGlpk as Osi
+        except:
+            import OsiClp as Osi
 
         parts = self.model_path.split('.')
         extensions = parts[-2:len(parts)]

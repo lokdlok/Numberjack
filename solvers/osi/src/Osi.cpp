@@ -85,7 +85,7 @@ void OsiSolver::initialise() {
             objective[i] = -1.0 * _obj_coef * _obj->_coefficients.at(i);
         }
     } else {
-        for (unsigned int i = 0; i < var_counter; i++) {
+        for (int i = 0; i < var_counter; i++) {
             objective[i] = 0.0;
         }
     }
@@ -294,6 +294,18 @@ int OsiSolver::load_mps(const char * filename, const char * extension) {
 
 int OsiSolver::load_lp(const char *filename, const double epsilon) {
     return si->readLp(filename, epsilon);
+}
+
+void OsiSolver::write_lp(const char* filename, const char* extension, const double epsilon,
+             const int numberAcross, const int decimals, double objSense,
+             const bool useRowNames) {
+    prepareSolve();
+    si->writeLp(filename, extension, epsilon, numberAcross, decimals, objSense, useRowNames);
+}
+
+void OsiSolver::write_mps(const char* filename, const char* extension, double objSense) {
+    prepareSolve();
+    si->writeMps(filename, extension, objSense);
 }
 
 /*
